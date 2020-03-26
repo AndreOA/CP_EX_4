@@ -39,8 +39,9 @@ int main(int argc, char *argv[])
 
     exit(1);
   }
-  printf("\033[2J");
-  printf("\033[0;0H");
+  printf("\033[2J"); // TO CLEAR TERMINAL WINDOW
+
+  printf("\033[0;0H"); // TO POSITION CURSOR TO  0,0
   printf("Seed board:\n");
   game_print_board(game);
 
