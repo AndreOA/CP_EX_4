@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
 
     exit(1);
   }
-
+  printf("\033[2J");
+  printf("\033[0;0H");
   printf("Seed board:\n");
   game_print_board(game);
 
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
       game_config_free(config);
       game_free(game);
     }
-
+    printf("\033[0;0H");
     printf("\nGeneration %zu:\n", generation);
     game_print_board(game);
   }
