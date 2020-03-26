@@ -55,11 +55,10 @@ GameConfig *game_config_new_from_cli(int argc, char *argv[])
   GameConfig *config;
   long generations;
 
-  if (argc != CLI_ARGC) {
+  if (argc < CLI_ARGC) {
     fprintf(stderr, usage_message);
     return NULL;
   }
-
   generations = strtol(argv[1], &endptr, 10);
   if ((*endptr != '\0') || (generations < 0)) {
     fprintf(stderr, "Error: GENERATIONS must be a valid positive integer\n");
