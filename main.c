@@ -17,14 +17,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "config.h"
 #include "game.h"
+
 
 int main(int argc, char *argv[])
 {
   GameConfig *config;
   Game *game;
   size_t generation;
+  int opt,q,p ;
 
   config = game_config_new_from_cli(argc, argv);
   if (!config)
@@ -39,11 +42,28 @@ int main(int argc, char *argv[])
 
     exit(1);
   }
+ 
+  while((opt = getopt(argc,argv,"pq:")) != -1){
+    switch(opt){
+      case 'q':
+        q = 1;
+        break;
+      case 'p':
+        p = atoi(optarg);
+        break;
+    }
+  } 
+
+
   printf("\033[2J"); // TO CLEAR TERMINAL WINDOW
 
+
+  if (!q){
   printf("\033[0;0H"); // TO POSITION CURSOR TO  0,0
   printf("Seed board:\n");
   game_print_board(game);
+  sleep(p);
+  }
 
   for (generation = 1; generation <= game_config_get_generations(config); generation++) {
     if (game_tick(game)) {
@@ -51,9 +71,14 @@ int main(int argc, char *argv[])
       game_config_free(config);
       game_free(game);
     }
+    if (!q || generation == game_config_get_generations(config)){
     printf("\033[0;0H");
     printf("\nGeneration %zu:\n", generation);
     game_print_board(game);
+      if(!q){
+      sleep(p);
+      }
+    }
   }
 
   game_config_free(config);
