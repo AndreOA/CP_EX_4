@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
   size_t generation;
   int opt;
   int p = 0;
-  int q = 1;
+  int q = 0;
  
 
   config = game_config_new_from_cli(argc, argv);
@@ -49,12 +49,10 @@ int main(int argc, char *argv[])
   while((opt = getopt(argc,argv,"qp:")) != -1){
     switch(opt){
       case 'q':
-        q = 0;
-        printf(" Q = %d\n", q);
+        q = 1;
         break;
       case 'p':
         p = atoi(optarg);
-        printf(" P = %d\n", p);
         break;
       default: 
        break;
@@ -64,7 +62,7 @@ int main(int argc, char *argv[])
   printf("\033[2J"); // TO CLEAR TERMINAL WINDOW
 
 
-  if (q){
+  if (!q){
   printf("\033[0;0H"); // TO POSITION CURSOR TO  0,0
   printf("Seed board:\n");
   game_print_board(game);
@@ -77,11 +75,11 @@ int main(int argc, char *argv[])
       game_config_free(config);
       game_free(game);
     }
-    if (q || generation == game_config_get_generations(config)){
+    if (!q || generation == game_config_get_generations(config)){
     printf("\033[0;0H");
-    printf("\nGeneration %zu:\n", generation);
+    printf("Generation %zu:\n", generation);
     game_print_board(game);
-      if(q){
+      if(!q){
       sleep(p);
       }
     }
